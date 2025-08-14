@@ -1,0 +1,5 @@
+apiVersion: v2
+description: A Helm chart for N8N Workflows Search Engine
+name: n8n-workflows-search-engine
+type: application
+version: 0.0.1

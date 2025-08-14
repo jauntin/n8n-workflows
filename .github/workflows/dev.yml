@@ -1,0 +1,19 @@
+name: Dev
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  Build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+    with:
+      ENV: dev
+  Deploy:
+    needs: Build
+    uses: ./.github/workflows/deploy.yml
+    with:
+      CLUSTER: Dev
+      ENV: dev
+    secrets: inherit

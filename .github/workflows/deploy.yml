@@ -1,0 +1,30 @@
+name: Deploy
+on:
+  workflow_call:
+    inputs:
+      CLUSTER:
+        required: true
+        type: string
+      ENV:
+        required: true
+        type: string
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jauntin/actions/deploy-container@v1
+        with:
+          # Project-dependent values
+          aws-repository-name: "jauntin/n8n-workflows-search-engine"
+          github-repository-location: "jauntin/n8n-workflows-search-engine"
+          helm-command: |
+            helm upgrade --namespace n8n-workflows-search-engine-${{ inputs.ENV }} --create-namespace --install --set image.tag=${{ inputs.ENV }} n8n-workflows-search-engine .deployment -f .deployment/values-${{ inputs.ENV }}.yaml
+          # Jauntin account values
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-repository-domain: "659377416169.dkr.ecr.us-east-2.amazonaws.com"
+          github-username: ${{ secrets.PAT_USER }}
+          github-password: ${{ secrets.PAT }}
+          tag: ${{ inputs.ENV }}
+          cluster: ${{ inputs.CLUSTER }}

@@ -1,0 +1,29 @@
+image:
+  repository: 659377416169.dkr.ecr.us-east-2.amazonaws.com/jauntin/n8n-workflows-search-engine
+  tag: latest
+  pullPolicy: Always
+server:
+  replicaCount: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 99%
+      maxSurge: 1
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 20m
+      memory: 32Mi
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
+    nginx.ingress.kubernetes.io/configuration-snippet: more_clear_headers "Server";

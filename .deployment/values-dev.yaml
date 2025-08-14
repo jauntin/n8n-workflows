@@ -1,0 +1,10 @@
+ingress:
+  hosts:
+    - host: dev.n8n-workflows.jauntin.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - dev.n8n-workflows.jauntin.com
+      secretName: n8n-workflows-tls
